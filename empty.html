@@ -89,7 +89,7 @@
 
         function update() {
             updatesnake();
-            updateobst();
+
         }
 
         function updatesnake() {
@@ -119,16 +119,24 @@
                     lasty += -1
 
                 }
+
                 sposx.push(lastx);
-                sposx.splice(0, 1)
                 sposy.push(lasty)
-                sposy.splice(0, 1)
+                if (lastx != ox || lasty != oy) {
+                    sposx.splice(0, 1)
+                    sposy.splice(0, 1)
+
+                }
+                else updateobst()
             }
         }
 
         function updateobst() {
-            var ox = Math.floor(Math.random() * canvas.width / size);
-            var oy = Math.floor(Math.random() * canvas.height / size);
+
+
+            ox = Math.floor(Math.random() * canvas.width / size);
+            oy = Math.floor(Math.random() * canvas.height / size);
+
         }
 
 
