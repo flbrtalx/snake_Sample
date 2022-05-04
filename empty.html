@@ -1,80 +1,151 @@
-
 <!DOCTYPE html>
 <html style="height: 100%;">
+
 <head>
     <meta charset="utf-8" />
     <title>Simple Snake like Game</title>
-    <style>* { padding: 0; margin: 0; } canvas { background: #eee; display: block; margin: 0 auto; }</style>
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+        }
+
+        canvas {
+            background: #eee;
+            display: block;
+            margin: 0 auto;
+        }
+    </style>
 </head>
+
 <body style="display: flex; justify-content: center; align-items: center; height: 100%;">
 
-<canvas id="myCanvas" width="480" height="320"></canvas>
+    <canvas id="myCanvas" width="480" height="320"></canvas>
 
-<script>
-    var canvas = document.getElementById("myCanvas");
-    var ctx = canvas.getContext("2d");
-    var size = 10;
+    <script>
+        var canvas = document.getElementById("myCanvas");
+        var ctx = canvas.getContext("2d");
+        var size = 20;
+        var sposx = 10;
+        var sposy = 10;
 
-    var rightPressed = false;
-    var leftPressed = false;
-	var upPressed = false;
-    var downPressed = false;
-    
-    document.addEventListener("keydown", keyDownHandler, false);
-    document.addEventListener("keyup", keyUpHandler, false);
 
-	//Taste gedrückt
-    function keyDownHandler(e) {
-        if(e.code  == "ArrowRight") {
-            rightPressed = true;
-        }
-        else if(e.code == 'ArrowLeft') {
-            leftPressed = true;
-        }
-		else if(e.code == 'ArrowUp') {
-            upPressed = true;
-        }
-		else if(e.code == 'ArrowDown') {
-            downPressed = true;
-        }
-    }
-	//Taste losgelassen
-    function keyUpHandler(e) {
-        if(e.code == 'ArrowRight') {
-            rightPressed = false;
-        }
-        else if(e.code == 'ArrowLeft') {
-            leftPressed = false;
-        }
-		else if(e.code == 'ArrowUp') {
-            upPressed = false;
-        }
-		else if(e.code == 'ArrowDown') {
-            downPressed = false;
-        }
-    }
+        var ox = 0
+        var oy = 0
+        var w = canvas.width / size;
+        var h = canvas.height / size;
+        var direction = 0
+        var a = 0
+        var b = 0
+        var c = 0
+        var d = 0
 
-	//Zeichnen der Schlange
-    function drawSnake() {
-        ctx.beginPath();
-        ctx.arc(10, 10, size, 0, Math.PI*2);
-        ctx.fillStyle = "#0095DD";
-        ctx.fill();
-        ctx.closePath();
-    }
+        var rightPressed = false;
+        var leftPressed = false;
+        var upPressed = false;
+        var downPressed = false;
 
-	//Alles zeichen
-    function draw() {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        drawSnake();
+        document.addEventListener("keydown", keyDownHandler, false);
+        
+        //Taste gedrückt
+        function keyDownHandler(e) {
+            if (e.code == "ArrowRight") {
+                direction = 1;
+            
+            }
+            else if (e.code == 'ArrowLeft') {
+                direction = 2;
+            }
+            else if (e.code == 'ArrowUp') {
+                direction = 4;
+                
+            }
+            else if (e.code == 'ArrowDown') {
+                direction = 3;
+            }
+        }
 
-		//Immer wieder alles Zeichnen -> 60fps, d.h. draw wird alle 16ms aufgerufen.
-        requestAnimationFrame(draw);
-    }
+        //Zeichnen der Schlange
+        function drawSnake() {
+            ctx.beginPath();
+            ctx.rect(sposx*size, sposy*size, 20, 20)
+            ctx.fillStyle = "#0095DD";
+            ctx.fill();
+            ctx.closePath();
+        }
 
-	//Zeichnen erstmalig aufrufen
-    draw();
-</script>
+        function drawobst(){
+            ctx.beginPath();
+            ctx.rect(ox*size, oy*size,20,20);
+            ctx.fillStyle = "#FF9900";
+            ctx.fill();
+            ctx.stroke();
+        }
+
+        function update() {
+            updatesnake();
+        }
+
+        function updatesnake(){
+           
+            if (direction == 1){
+                a++
+                if (a % 10 == 0)
+                    sposx += 1
+                    
+            }
+            if (direction == 2){
+                b++
+                if (b % 10 == 0)
+                    sposx += -1
+                    
+            }
+                
+                
+            if (direction == 3){
+                c++
+                if (c % 10 == 0)
+                    sposy += 1
+                    
+            }
+                
+            if (direction == 4){
+                d++
+                if (d % 10 == 0)
+                    sposy += -1
+                    
+            }
+              
+                
+        }
+
+        function updateobst(){
+            var ox = Math.floor(Math.random() * canvas.width/size);
+            var oy = Math.floor(Math.random() * canvas.height/size); 
+        }
+        
+
+        //Alles zeichen
+        function draw() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            update();
+
+            drawSnake();
+            drawobst();
+
+            //Immer wieder alles Zeichnen -> 60fps, d.h. draw wird alle 16ms aufgerufen.
+            requestAnimationFrame(draw);
+            
+        }
+
+        //Zeichnen erstmalig aufrufen
+        draw();
+
+
+
+    </script>
 
 </body>
+
 </html>
